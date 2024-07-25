@@ -72,7 +72,7 @@ public class GUIAutoSellFilter extends CustomizableGui {
         // Whitelist
         ItemStack indicatorItem = XMaterial.WHITE_STAINED_GLASS_PANE.parseItem();
         ItemMeta indicatorMeta = indicatorItem.getItemMeta();
-        indicatorMeta.setDisplayName(plugin.getLocale().getMessage("interface.autosell-filter.whitelist").getMessage());
+        indicatorMeta.setDisplayName(plugin.getLocale().getMessage("interface.autosell-filter.whitelist").toText());
         indicatorItem.setItemMeta(indicatorMeta);
 
         int[] whiteSlots = {0, 1, 2, 45, 46, 47};
@@ -92,7 +92,7 @@ public class GUIAutoSellFilter extends CustomizableGui {
         // Blacklist
         indicatorItem = XMaterial.BLACK_STAINED_GLASS_PANE.parseItem();
         indicatorMeta = indicatorItem.getItemMeta();
-        indicatorMeta.setDisplayName(plugin.getLocale().getMessage("interface.autosell-filter.blacklist").getMessage());
+        indicatorMeta.setDisplayName(plugin.getLocale().getMessage("interface.autosell-filter.blacklist").toText());
         indicatorItem.setItemMeta(indicatorMeta);
 
         int[] blackSlots = {3, 4, 5, 48, 49, 50};
@@ -113,12 +113,12 @@ public class GUIAutoSellFilter extends CustomizableGui {
         indicatorItem = XMaterial.PAPER.parseItem();
         indicatorMeta = indicatorItem.getItemMeta();
 
-        indicatorMeta.setDisplayName(plugin.getLocale().getMessage("interface.autosell-filter.infotitle").getMessage());
+        indicatorMeta.setDisplayName(plugin.getLocale().getMessage("interface.autosell-filter.infotitle").toText());
         ArrayList<String> loreInfo = new ArrayList<>();
         String[] parts = plugin
                 .getLocale()
                 .getMessage("interface.autosell-filter.infolore")
-                .getMessage()
+                .toText()
                 .split("\\|");
 
         for (String line : parts) {

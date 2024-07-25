@@ -92,7 +92,7 @@ public class ModuleAutoSmelter extends Module {
     public ItemStack getGUIButton(Hopper hopper) {
         ItemStack block = XMaterial.IRON_INGOT.parseItem();
         ItemMeta blockMeta = block.getItemMeta();
-        blockMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.smelttitle").getMessage());
+        blockMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.smelttitle").toText());
         ArrayList<String> loreBlock = new ArrayList<>();
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.smeltlore")
                 .processPlaceholder("timeleft", getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20.0))
@@ -100,7 +100,7 @@ public class ModuleAutoSmelter extends Module {
                         this.plugin.getLocale().getMessage("general.word.enabled").getMessage() :
                         this.plugin.getLocale().getMessage("general.word.disabled").getMessage()
                 )
-                .getMessage()
+                .toText()
                 .split("\\|");
         for (String line : parts) {
             loreBlock.add(TextUtils.formatText(line));
@@ -138,7 +138,7 @@ public class ModuleAutoSmelter extends Module {
     @Override
     public String getDescription() {
         return this.plugin.getLocale().getMessage("interface.hopper.autosmelt")
-                .processPlaceholder("ticks", (int) Math.floor(this.timeOut / 20.0)).getMessage();
+                .processPlaceholder("ticks", (int) Math.floor(this.timeOut / 20.0)).toText();
     }
 
     private int getTime(Hopper hopper) {

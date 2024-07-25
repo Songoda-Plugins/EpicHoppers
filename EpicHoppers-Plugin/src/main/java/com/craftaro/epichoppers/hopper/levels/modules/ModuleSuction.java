@@ -191,11 +191,11 @@ public class ModuleSuction extends Module {
         Locale locale = this.plugin.getLocale();
         ItemStack item = XMaterial.CAULDRON.parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(locale.getMessage("interface.hopper.suctiontitle").getMessage());
+        meta.setDisplayName(locale.getMessage("interface.hopper.suctiontitle").toText());
         List<String> lore = new ArrayList<>();
         String[] parts = locale.getMessage("interface.hopper.suctionlore")
-                .processPlaceholder("status", isEnabled(hopper) ? locale.getMessage("general.word.enabled").getMessage() : locale.getMessage("general.word.disabled").getMessage())
-                .processPlaceholder("radius", getRadius(hopper)).getMessage().split("\\|");
+                .processPlaceholder("status", isEnabled(hopper) ? locale.getMessage("general.word.enabled").toText() : locale.getMessage("general.word.disabled").toText())
+                .processPlaceholder("radius", getRadius(hopper)).toText().split("\\|");
         for (String line : parts) {
             lore.add(TextUtils.formatText(line));
         }
@@ -247,6 +247,6 @@ public class ModuleSuction extends Module {
         return this.plugin.getLocale()
                 .getMessage("interface.hopper.suction")
                 .processPlaceholder("suction", this.maxSearchRadius)
-                .getMessage();
+                .toText();
     }
 }

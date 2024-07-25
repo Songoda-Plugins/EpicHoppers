@@ -192,10 +192,10 @@ public class ModuleAutoCrafting extends Module {
         ItemStack crafting = XMaterial.CRAFTING_TABLE.parseItem();
         ItemMeta craftingMeta = crafting.getItemMeta();
         craftingMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.craftingtitle")
-                .getMessage());
+                .toText());
         ArrayList<String> lorecrafting = new ArrayList<>();
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.craftinglore")
-                .getMessage().split("\\|");
+                .toText().split("\\|");
         for (String line : parts) {
             lorecrafting.add(TextUtils.formatText(line));
         }
@@ -223,8 +223,8 @@ public class ModuleAutoCrafting extends Module {
     public String getDescription() {
         return this.plugin.getLocale()
                 .getMessage("interface.hopper.crafting")
-                .processPlaceholder("enabled", this.plugin.getLocale().getMessage("general.word.enabled").getMessage())
-                .getMessage();
+                .processPlaceholder("enabled", this.plugin.getLocale().getMessage("general.word.enabled").toText())
+                .toText();
     }
 
     @Override

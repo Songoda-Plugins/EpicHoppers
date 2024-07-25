@@ -1,6 +1,7 @@
 package com.craftaro.epichoppers.hopper.levels.modules;
 
 import com.craftaro.core.SongodaPlugin;
+import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.compatibility.ServerVersion;
 import com.craftaro.core.gui.GuiManager;
 import com.craftaro.core.utils.TextUtils;
@@ -127,22 +128,20 @@ public class ModuleBlockBreak extends Module {
     @Override
     public ItemStack getGUIButton(Hopper hopper) {
         ItemStack block = new ItemStack(Material.IRON_ORE, 1);
-        ItemMeta blockMeta = block.getItemMeta();
-        blockMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.blocktitle").getMessage());
+        AdventureUtils.formatItemName(block, this.plugin.getLocale().getMessage("interface.hopper.blocktitle").getMessage());
         ArrayList<String> loreBlock = new ArrayList<>();
         String[] parts = this.plugin.getLocale()
                 .getMessage("interface.hopper.blocklore")
                 .processPlaceholder("enabled", isEnabled(hopper)
-                        ? this.plugin.getLocale().getMessage("general.word.enabled").getMessage()
-                        : this.plugin.getLocale().getMessage("general.word.disabled").getMessage()
+                        ? this.plugin.getLocale().getMessage("general.word.enabled").toText()
+                        : this.plugin.getLocale().getMessage("general.word.disabled").toText()
                 )
-                .getMessage()
+                .toText()
                 .split("\\|");
         for (String line : parts) {
             loreBlock.add(TextUtils.formatText(line));
         }
-        blockMeta.setLore(loreBlock);
-        block.setItemMeta(blockMeta);
+        AdventureUtils.formatItemLore(block, loreBlock);
         return block;
     }
 
@@ -159,7 +158,7 @@ public class ModuleBlockBreak extends Module {
     @Override
     public String getDescription() {
         return this.plugin.getLocale().getMessage("interface.hopper.blockbreak")
-                .processPlaceholder("ticks", this.ticksPerBreak).getMessage();
+                .processPlaceholder("ticks", this.ticksPerBreak).toText();
     }
 
     @Override

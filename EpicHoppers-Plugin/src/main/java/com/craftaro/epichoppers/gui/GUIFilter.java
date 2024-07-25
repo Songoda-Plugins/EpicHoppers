@@ -64,7 +64,7 @@ public class GUIFilter extends CustomizableGui {
 
         ItemStack it = XMaterial.WHITE_STAINED_GLASS_PANE.parseItem();
         ItemMeta itm = it.getItemMeta();
-        itm.setDisplayName(plugin.getLocale().getMessage("interface.filter.whitelist").getMessage());
+        itm.setDisplayName(plugin.getLocale().getMessage("interface.filter.whitelist").toText());
         it.setItemMeta(itm);
 
         setButton("back", 8, GuiUtils.createButtonItem(XMaterial.ARROW.parseItem(),
@@ -93,7 +93,7 @@ public class GUIFilter extends CustomizableGui {
 
         it = XMaterial.BLACK_STAINED_GLASS_PANE.parseItem();
         itm = it.getItemMeta();
-        itm.setDisplayName(plugin.getLocale().getMessage("interface.filter.blacklist").getMessage());
+        itm.setDisplayName(plugin.getLocale().getMessage("interface.filter.blacklist").toText());
         it.setItemMeta(itm);
 
         int[] blackSlots = {2, 3, 47, 48};
@@ -114,7 +114,7 @@ public class GUIFilter extends CustomizableGui {
 
         it = XMaterial.BARRIER.parseItem();
         itm = it.getItemMeta();
-        itm.setDisplayName(plugin.getLocale().getMessage("interface.filter.void").getMessage());
+        itm.setDisplayName(plugin.getLocale().getMessage("interface.filter.void").toText());
         it.setItemMeta(itm);
 
         int[] avoid = {4, 5, 49, 50};
@@ -134,9 +134,9 @@ public class GUIFilter extends CustomizableGui {
 
         ItemStack itemInfo = XMaterial.PAPER.parseItem();
         ItemMeta itemMetaInfo = itemInfo.getItemMeta();
-        itemMetaInfo.setDisplayName(plugin.getLocale().getMessage("interface.filter.infotitle").getMessage());
+        itemMetaInfo.setDisplayName(plugin.getLocale().getMessage("interface.filter.infotitle").toText());
         ArrayList<String> loreInfo = new ArrayList<>();
-        String[] parts = plugin.getLocale().getMessage("interface.filter.infolore").getMessage().split("\\|");
+        String[] parts = plugin.getLocale().getMessage("interface.filter.infolore").toText().split("\\|");
         for (String line : parts) {
             loreInfo.add(TextUtils.formatText(line));
         }
@@ -148,11 +148,11 @@ public class GUIFilter extends CustomizableGui {
 
         ItemStack hook = XMaterial.TRIPWIRE_HOOK.parseItem();
         ItemMeta hookMeta = hook.getItemMeta();
-        hookMeta.setDisplayName(plugin.getLocale().getMessage("interface.hopper.rejectsync").getMessage());
+        hookMeta.setDisplayName(plugin.getLocale().getMessage("interface.hopper.rejectsync").toText());
         ArrayList<String> loreHook = new ArrayList<>();
         parts = plugin.getLocale().getMessage("interface.hopper.synclore")
                 .processPlaceholder("amount", filter.getEndPoint() != null ? 1 : 0)
-                .getMessage().split("\\|");
+                .toText().split("\\|");
         for (String line : parts) {
             loreHook.add(TextUtils.formatText(line));
         }

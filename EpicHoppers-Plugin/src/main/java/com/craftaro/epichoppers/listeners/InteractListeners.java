@@ -1,5 +1,6 @@
 package com.craftaro.epichoppers.listeners;
 
+import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.hooks.ProtectionManager;
 import com.craftaro.core.hooks.WorldGuardHook;
 import com.craftaro.epichoppers.hopper.Hopper;
@@ -63,7 +64,7 @@ public class InteractListeners implements Listener {
         }
 
         if (Settings.USE_PROTECTION_PLUGINS.getBoolean() && ProtectionManager.canInteract(player, event.getClickedBlock().getLocation()) && WorldGuardHook.isInteractAllowed(event.getClickedBlock().getLocation())) {
-            player.sendMessage(this.plugin.getLocale().getMessage("event.general.protected").getPrefixedMessage());
+            AdventureUtils.sendMessage(this.plugin, this.plugin.getLocale().getMessage("event.general.protected").getPrefixedMessage());
             return;
         }
 
@@ -81,7 +82,7 @@ public class InteractListeners implements Listener {
         if (playerData.getSyncType() == null) {
             if (event.getClickedBlock().getType() == Material.HOPPER) {
                 if (!this.plugin.getHopperManager().isReady()) {
-                    player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.notready").getMessage());
+                    AdventureUtils.sendMessage(this.plugin, this.plugin.getLocale().getMessage("event.hopper.notready").getPrefixedMessage());
                     event.setCancelled(true);
                     return;
                 }
