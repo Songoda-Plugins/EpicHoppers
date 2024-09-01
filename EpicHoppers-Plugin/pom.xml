@@ -178,7 +178,7 @@
         <dependency>
             <groupId>dev.rosewood</groupId>
             <artifactId>rosestacker</artifactId>
-            <version>1.5.23</version>
+            <version>1.5.25</version>
             <scope>provided</scope>
         </dependency>
 
