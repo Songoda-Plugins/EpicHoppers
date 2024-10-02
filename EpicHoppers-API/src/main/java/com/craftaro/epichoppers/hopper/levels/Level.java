@@ -41,7 +41,7 @@ public class Level {
         if (this.filter) {
             this.description.add(getPlugin().getLocale().getMessage("interface.hopper.filter")
                     .processPlaceholder("enabled", getPlugin().getLocale()
-                            .getMessage("general.word.enabled").getMessage()).toText());
+                            .getMessage("general.word.enabled").toText()).toText());
         }
         if (this.teleport) {
             this.description.add(getPlugin()

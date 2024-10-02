@@ -151,8 +151,8 @@ public class ModuleAutoSell extends Module {
         ArrayList<String> loreSell = new ArrayList<>();
 
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.selllore")
-                .processPlaceholder("timeleft", getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20))
-                .processPlaceholder("state", isNotifying(hopper))
+                .processPlaceholder("timeleft", String.valueOf(getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20)))
+                .processPlaceholder("state", String.valueOf(isNotifying(hopper)))
                 .toText()
                 .split("\\|");
 

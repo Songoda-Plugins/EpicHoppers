@@ -85,7 +85,7 @@ public class GUIOverview extends CustomizableGui {
                 .processPlaceholder(
                         "type",
                         this.hopper.getTeleportTrigger() == TeleportTrigger.DISABLED
-                                ? this.plugin.getLocale().getMessage("general.word.disabled").getMessage()
+                                ? this.plugin.getLocale().getMessage("general.word.disabled").toText()
                                 : this.hopper.getTeleportTrigger().name()
                 )
                 .toText()

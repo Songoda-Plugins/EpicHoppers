@@ -95,10 +95,10 @@ public class ModuleAutoSmelter extends Module {
         blockMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.smelttitle").toText());
         ArrayList<String> loreBlock = new ArrayList<>();
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.smeltlore")
-                .processPlaceholder("timeleft", getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20.0))
+                .processPlaceholder("timeleft", String.valueOf(getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20.0)))
                 .processPlaceholder("enabled", isEnabled(hopper) ?
-                        this.plugin.getLocale().getMessage("general.word.enabled").getMessage() :
-                        this.plugin.getLocale().getMessage("general.word.disabled").getMessage()
+                        this.plugin.getLocale().getMessage("general.word.enabled").toText() :
+                        this.plugin.getLocale().getMessage("general.word.disabled").toText()
                 )
                 .toText()
                 .split("\\|");

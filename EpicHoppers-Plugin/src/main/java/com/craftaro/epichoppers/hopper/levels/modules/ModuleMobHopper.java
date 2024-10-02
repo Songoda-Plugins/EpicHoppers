@@ -72,7 +72,7 @@ public class ModuleMobHopper extends Module {
         ArrayList<String> loreBlock = new ArrayList<>();
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.moblore").processPlaceholder("enabled",
                 isEnabled(hopper) ? this.plugin.getLocale().getMessage("general.word.enabled").toText()
-                        : this.plugin.getLocale().getMessage("general.word.disabled").getMessage()).toText().split("\\|");
+                        : this.plugin.getLocale().getMessage("general.word.disabled").toText()).toText().split("\\|");
         for (String line : parts) {
             loreBlock.add(TextUtils.formatText(line));
         }
