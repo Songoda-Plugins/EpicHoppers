@@ -80,7 +80,7 @@ public class Methods {
         String name = getPlugin().getLocale()
                 .getMessage("general.nametag.nameformat")
                 .processPlaceholder("level", level)
-                .getMessage();
+                .toText();
 
 
         return TextUtils.formatText(name);

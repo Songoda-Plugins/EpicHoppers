@@ -1,6 +1,7 @@
 package com.craftaro.epichoppers.hopper.levels.modules;
 
 import com.craftaro.core.SongodaPlugin;
+import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.gui.GuiManager;
 import com.craftaro.core.utils.TextUtils;
 import com.craftaro.epichoppers.hopper.Hopper;
@@ -67,17 +68,15 @@ public class ModuleMobHopper extends Module {
     @Override
     public ItemStack getGUIButton(Hopper hopper) {
         ItemStack block = new ItemStack(Material.ROTTEN_FLESH, 1);
-        ItemMeta blockMeta = block.getItemMeta();
-        blockMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.mobtitle").getMessage());
+        AdventureUtils.formatItemName(block, this.plugin.getLocale().getMessage("interface.hopper.mobtitle").getMessage());
         ArrayList<String> loreBlock = new ArrayList<>();
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.moblore").processPlaceholder("enabled",
-                isEnabled(hopper) ? this.plugin.getLocale().getMessage("general.word.enabled").getMessage()
-                        : this.plugin.getLocale().getMessage("general.word.disabled").getMessage()).getMessage().split("\\|");
+                isEnabled(hopper) ? this.plugin.getLocale().getMessage("general.word.enabled").toText()
+                        : this.plugin.getLocale().getMessage("general.word.disabled").toText()).toText().split("\\|");
         for (String line : parts) {
             loreBlock.add(TextUtils.formatText(line));
         }
-        blockMeta.setLore(loreBlock);
-        block.setItemMeta(blockMeta);
+        AdventureUtils.formatItemLore(block, loreBlock);
         return block;
     }
 
@@ -96,7 +95,7 @@ public class ModuleMobHopper extends Module {
         return this.plugin.getLocale()
                 .getMessage("interface.hopper.mobhopper")
                 .processPlaceholder("ticks", this.amount)
-                .getMessage();
+                .toText();
     }
 
     public boolean isEnabled(Hopper hopper) {

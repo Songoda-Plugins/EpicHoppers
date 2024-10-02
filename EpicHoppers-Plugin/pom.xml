@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.craftaro</groupId>
         <artifactId>EpicHoppers-Parent</artifactId>
-        <version>5.0.3</version>
+        <version>5.3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>EpicHoppers-Plugin</artifactId>
@@ -17,7 +17,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.6.0</version>
 
                 <executions>
                     <execution>
@@ -56,10 +56,10 @@
                                     <excludeDefaults>false</excludeDefaults>
                                     <includes>
                                         <include>**/nms/v*/**</include>
+                                        <include>**/third_party/net/kyori/**</include>
                                     </includes>
                                     <excludes>
                                         <exclude>**/third_party/org/apache/**</exclude>
-                                        <exclude>**/third_party/net/kyori/**</exclude>
                                         <exclude>**/third_party/com/zaxxer/**</exclude>
                                         <exclude>**/third_party/org/jooq/**</exclude>
                                         <exclude>**/third_party/org/mariadb/**</exclude>
@@ -96,6 +96,16 @@
         </repository>
 
         <repository>
+            <id>bg-repo</id>
+            <url>https://repo.bg-software.com/repository/api/</url>
+        </repository>
+
+        <repository>
+            <id>songoda-public</id>
+            <url>https://repo.songoda.com/repository/minecraft-plugins/</url>
+        </repository>
+
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
         </repository>
@@ -119,21 +129,21 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.craftaro</groupId>
             <artifactId>FabledSkyBlock</artifactId>
-            <version>3.0.4</version>
+            <version>3.0.8-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.craftaro</groupId>
             <artifactId>EpicFarming</artifactId>
-            <version>4.1.1</version>
+            <version>4.2.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -147,7 +157,7 @@
         <dependency>
             <groupId>com.github.Gypopo</groupId>
             <artifactId>EconomyShopGUI-API</artifactId>
-            <version>1.7.0</version>
+            <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -160,15 +170,15 @@
 
         <dependency>
             <groupId>com.bgsoftware</groupId>
-            <artifactId>wildstacker</artifactId>
-            <version>3.5.1</version>
+            <artifactId>WildStackerAPI</artifactId>
+            <version>2024.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>dev.rosewood</groupId>
             <artifactId>rosestacker</artifactId>
-            <version>1.5.17</version>
+            <version>1.5.23</version>
             <scope>provided</scope>
         </dependency>
 

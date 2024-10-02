@@ -31,17 +31,17 @@ public class Level {
         this.description.clear();
 
         this.description.add(getPlugin().getLocale().getMessage("interface.hopper.range")
-                .processPlaceholder("range", this.range).getMessage());
+                .processPlaceholder("range", this.range).toText());
         this.description.add(getPlugin().getLocale().getMessage("interface.hopper.amount")
-                .processPlaceholder("amount", this.amount).getMessage());
+                .processPlaceholder("amount", this.amount).toText());
         if (this.linkAmount != 1) {
             this.description.add(getPlugin().getLocale().getMessage("interface.hopper.linkamount")
-                    .processPlaceholder("amount", this.linkAmount).getMessage());
+                    .processPlaceholder("amount", this.linkAmount).toText());
         }
         if (this.filter) {
             this.description.add(getPlugin().getLocale().getMessage("interface.hopper.filter")
                     .processPlaceholder("enabled", getPlugin().getLocale()
-                            .getMessage("general.word.enabled").getMessage()).getMessage());
+                            .getMessage("general.word.enabled").toText()).toText());
         }
         if (this.teleport) {
             this.description.add(getPlugin()
@@ -52,8 +52,8 @@ public class Level {
                             getPlugin()
                                     .getLocale()
                                     .getMessage("general.word.enabled")
-                                    .getMessage())
-                    .getMessage());
+                                    .toText())
+                    .toText());
         }
 
         for (Module module : this.registeredModules) {

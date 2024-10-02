@@ -117,7 +117,7 @@ public class GUISmeltable extends CustomizableGui {
         meta.setLore(Arrays.asList(TextUtils.formatText("   &7-> &e" + CompatibleMaterial.getFurnaceResult(material).getType().name()),
                 TextUtils.formatText("&7Enabled: &6" + String.valueOf(enabled).toLowerCase() + "&7."),
                 "",
-                this.plugin.getLocale().getMessage("interface.hopper.toggle").getMessage()));
+                this.plugin.getLocale().getMessage("interface.hopper.toggle").toText()));
         item.setItemMeta(meta);
 
         return item;

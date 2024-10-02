@@ -235,7 +235,7 @@ public class EpicHoppers extends SongodaPlugin {
         ItemStack item = XMaterial.HOPPER.parseItem();
         ItemMeta itemmeta = item.getItemMeta();
         itemmeta.setDisplayName(TextUtils.formatText(Methods.formatName(level.getLevel())));
-        String line = getLocale().getMessage("general.nametag.lore").getMessage();
+        String line = getLocale().getMessage("general.nametag.lore").toText();
         if (!line.isEmpty()) {
             itemmeta.setLore(Arrays.asList(line.split("\n")));
         }

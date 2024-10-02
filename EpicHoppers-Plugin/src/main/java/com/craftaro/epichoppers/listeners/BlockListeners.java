@@ -52,7 +52,7 @@ public class BlockListeners implements Listener {
         int max = maxHoppers(player);
 
         if (max != -1 && amt > max) {
-            player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.toomany").processPlaceholder("amount", max).getMessage());
+            player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.toomany").processPlaceholder("amount", max).toText());
             e.setCancelled(true);
             return;
         }
@@ -64,7 +64,7 @@ public class BlockListeners implements Listener {
         }
 
         if (!this.plugin.getHopperManager().isReady()) {
-            player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.notready").getMessage());
+            player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.notready").toText());
             e.setCancelled(true);
             return;
         }
@@ -121,7 +121,7 @@ public class BlockListeners implements Listener {
         }
 
         if (!this.plugin.getHopperManager().isReady()) {
-            player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.notready").getMessage());
+            player.sendMessage(this.plugin.getLocale().getMessage("event.hopper.notready").toText());
             event.setCancelled(true);
             return;
         }

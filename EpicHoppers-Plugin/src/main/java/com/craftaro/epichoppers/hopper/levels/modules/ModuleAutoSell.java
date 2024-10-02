@@ -147,13 +147,13 @@ public class ModuleAutoSell extends Module {
         ItemStack sellItem = XMaterial.SUNFLOWER.parseItem();
         ItemMeta sellMeta = sellItem.getItemMeta();
 
-        sellMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.selltitle").getMessage());
+        sellMeta.setDisplayName(this.plugin.getLocale().getMessage("interface.hopper.selltitle").toText());
         ArrayList<String> loreSell = new ArrayList<>();
 
         String[] parts = this.plugin.getLocale().getMessage("interface.hopper.selllore")
-                .processPlaceholder("timeleft", getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20))
-                .processPlaceholder("state", isNotifying(hopper))
-                .getMessage()
+                .processPlaceholder("timeleft", String.valueOf(getTime(hopper) == -9999 ? "∞" : (int) Math.floor(getTime(hopper) / 20)))
+                .processPlaceholder("state", String.valueOf(isNotifying(hopper)))
+                .toText()
                 .split("\\|");
 
         for (String line : parts) {
@@ -192,7 +192,7 @@ public class ModuleAutoSell extends Module {
         return this.plugin.getLocale()
                 .getMessage("interface.hopper.autosell")
                 .processPlaceholder("seconds", (int) Math.floor(this.timeOut / 20))
-                .getMessage();
+                .toText();
     }
 
     @Override
