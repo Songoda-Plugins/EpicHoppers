@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Crafter;
 import org.bukkit.block.Hopper;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Entity;
@@ -26,6 +27,7 @@ import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -368,6 +370,34 @@ public class HopTask extends BukkitRunnable {
                     }
                 }
                 // Can't put anything in there, so keep looking for targets
+                continue;
+            }
+
+            //Check if the target is a Crafter block
+            if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_21_1) && targetBlock.getType() == Material.CRAFTER) {
+                Crafter crafter = (Crafter) targetBlock.getState();
+                PersistentDataContainer crafterData = crafter.getPersistentDataContainer();
+                Inventory crafterInventory = crafter.getInventory();
+
+                int lastFilledSlot = -1; //Get it from the persistent data container
+
+                //Get the first slot we can push an item to
+                for (int i = 0; i < 9; i++) {
+                    if (crafter.isSlotDisabled(i)) {
+                        continue;
+                    }
+                    ItemStack crafterItem = crafterInventory.getItem(i);
+                    if (crafterItem != null) continue; //Skip filled slots
+
+                    for (int j = 0; j < 5; j++) {
+                        ItemStack itemToPush = hopperCache.cachedInventory[i];
+                        if (itemToPush == null) continue;
+
+                        //Get the
+                    }
+                }
+
+
                 continue;
             }
 
