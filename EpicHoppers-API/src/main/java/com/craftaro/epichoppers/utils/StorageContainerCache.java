@@ -99,19 +99,18 @@ public class StorageContainerCache {
         INVENTORY_CACHE.entrySet().stream()
                 .filter(e -> e.getValue().dirty)
                 .forEach(e -> {
-                    //System.out.println("Update " + e.getKey().getLocation());
-                    // setContents makes a copy of every item whether it's needed or not
-                    //((InventoryHolder) e.getKey().getState()).getInventory().setContents(e.getValue().cachedInventory);
-                    // so let's only update what needs to be updated.
                     final ItemStack[] cachedInventory = e.getValue().cachedInventory;
                     final boolean[] cacheChanged = e.getValue().cacheChanged;
-                    Inventory inventory = ((InventoryHolder) e.getKey().getState()).getInventory();//.setContents();
+                    Inventory inventory = ((InventoryHolder) e.getKey().getState()).getInventory();
                     for (int i = 0; i < cachedInventory.length; i++) {
                         if (cacheChanged[i]) {
                             inventory.setItem(i, cachedInventory[i]);
                         }
+                        // Reset cacheAdded for the next cycle
+                        e.getValue().cacheAdded[i] = 0;
+                        // Reset cacheChanged
+                        e.getValue().cacheChanged[i] = false;
                     }
-
                     Nms.getImplementations().getWorld().updateAdjacentComparators(e.getKey());
                 });
         INVENTORY_CACHE.clear();

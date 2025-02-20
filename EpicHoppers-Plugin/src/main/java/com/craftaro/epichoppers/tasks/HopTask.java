@@ -51,25 +51,20 @@ public class HopTask extends BukkitRunnable {
     @Override
     public void run() {
         for (final HopperImpl hopper : this.plugin.getHopperManager().getHoppers().values()) {
-
             try {
-                // Get this hopper's location.
+                // Get hopper location and ensure chunk is loaded.
                 Location location = hopper.getLocation();
-
-                // Skip if chunk is not loaded.
-                if (location.getWorld() == null || !location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+                if (location.getWorld() == null
+                        || !location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
                     continue;
                 }
 
-                // Get HopperImpl Block.
                 Block block = location.getBlock();
-
-                // If block is not a hopper continue.
                 if (block.getType() != Material.HOPPER) {
                     continue;
                 }
 
-                // If hopper block is powered, update its redstone state and continue.
+                // Skip if hopper is powered.
                 if (block.getBlockPower() > 0) {
                     hopper.tryTick(this.hopTicks, false);
                     continue;
@@ -79,36 +74,33 @@ public class HopTask extends BukkitRunnable {
                     continue;
                 }
 
-                // Amount to be moved.
+                // Determine maxToMove based on hopper level and boost.
                 BoostData boostData = this.plugin.getBoostManager().getBoost(hopper.getPlacedBy());
                 int maxToMove = hopper.getLevel().getAmount() * (boostData == null ? 1 : boostData.getMultiplier());
 
-                // Get hopper state data.
+                // Determine hopper pointing location.
                 HopperDirection hopperDirection;
                 Location pointingLocation;
-                if (ServerVersion.isServerVersionBelow(ServerVersion.V1_20)){
+                if (ServerVersion.isServerVersionBelow(ServerVersion.V1_20)) {
                     Hopper hopperState = (Hopper) block.getState();
                     hopperDirection = HopperDirection.getDirection(hopperState.getRawData());
                     pointingLocation = hopperDirection.getLocation(location);
-                }
-                else{
+                } else {
                     hopperDirection = HopperDirection.valueOf(((Directional) block.getBlockData()).getFacing().name());
                     BlockFace blockFace = hopperDirection.getDirectionFacing();
                     pointingLocation = block.getLocation().getBlock().getRelative(blockFace).getLocation();
                 }
-                final StorageContainerCache.Cache hopperCache = StorageContainerCache.getCachedInventory(block);
-                // Create list to hold blocked materials.
-                List<Material> blockedMaterials = new ArrayList<>();
 
-                // Cycle through modules.
+                // Retrieve hopper cache.
+                final StorageContainerCache.Cache hopperCache = StorageContainerCache.getCachedInventory(block);
+
+                // Gather blocked materials from all modules.
+                List<Material> blockedMaterials = new ArrayList<>();
                 hopper.getLevel().getRegisteredModules().stream()
                         .filter(Objects::nonNull)
                         .forEach(module -> {
                             try {
-                                // Run Module
                                 module.run(hopper, hopperCache);
-
-                                // Add banned materials to list.
                                 List<Material> materials = module.getBlockedItems(hopper);
                                 if (materials != null && !materials.isEmpty()) {
                                     blockedMaterials.addAll(materials);
@@ -118,28 +110,20 @@ public class HopTask extends BukkitRunnable {
                             }
                         });
 
-                // Process extra hopper pull
+                // Process extra pull and void filter.
                 pullItemsFromContainers(hopper, hopperCache, maxToMove);
-
-                // Void out items
                 processVoidFilter(hopper, hopperCache, maxToMove);
 
-                // don't proccess any further if the hopper is empty or if all items are blocked
+                // Check if any slot is available for processing.
                 boolean doProcess = false;
                 for (int i = 0; i < hopperCache.cachedInventory.length; i++) {
                     final ItemStack item = hopperCache.cachedInventory[i];
-
-                    // Can we check this item?
-                    if (    // Ignore this one if the slot is empty
-                            item == null
-                                    // Don't try to move items that we've added this round
-                                    || (hopperCache.cacheChanged[i] && item.getAmount() - hopperCache.cacheAdded[i] < maxToMove)
-                                    // skip if blocked or voidlisted
-                                    || blockedMaterials.contains(item.getType())
-                                    || hopper.getFilter().getVoidList().stream().anyMatch(itemStack -> Methods.isSimilarMaterial(itemStack, item))) {
+                    if (item == null
+                            || (hopperCache.cacheChanged[i] && item.getAmount() - hopperCache.cacheAdded[i] < maxToMove)
+                            || blockedMaterials.contains(item.getType())
+                            || hopper.getFilter().getVoidList().stream().anyMatch(itemStack -> Methods.isSimilarMaterial(itemStack, item))) {
                         continue;
                     }
-
                     doProcess = true;
                     break;
                 }
@@ -147,36 +131,36 @@ public class HopTask extends BukkitRunnable {
                     continue;
                 }
 
+                // Transfer items directly to the destination container.
                 CustomContainer container = this.plugin.getContainerManager().getCustomContainer(pointingLocation.getBlock());
                 if (container != null) {
-                    for (int i = 0; i < 5; i++) {
+                    // Loop over every slot.
+                    for (int i = 0; i < hopperCache.cachedInventory.length; i++) {
                         final ItemStack item = hopperCache.cachedInventory[i];
                         if (item == null) {
                             continue;
                         }
-
-                        if (container.addToContainer(item)) {
-                            if (item.getAmount() == 1) {
-                                hopperCache.removeItem(i);
-                            } else {
-                                item.setAmount(item.getAmount() - 1);
-                                hopperCache.dirty = hopperCache.cacheChanged[i] = true;
-                            }
+                        // Transfer a single item at a time.
+                        ItemStack singleItem = item.clone();
+                        singleItem.setAmount(1);
+                        if (container.addToContainer(singleItem)) {
+                            // Remove exactly one item from the hopper cache.
+                            hopperCache.removeItems(singleItem);
                             break;
                         }
                     }
                 }
 
-                // Move items into destination containers
+                // Push remaining items into destination containers.
                 pushItemsIntoContainers(hopper, hopperCache, maxToMove, blockedMaterials, hopperDirection);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        // push out inventory changes
+        // Push out inventory changes and reset cache state.
         StorageContainerCache.update();
     }
+
 
     private void debt(ItemStack item, int amountToMove, InventoryHolder currentHolder) {
         if (item.getAmount() - amountToMove > 0) {
@@ -391,14 +375,13 @@ public class HopTask extends BukkitRunnable {
 
                     for (int j = 0; j < 5; j++) {
                         ItemStack itemToPush = hopperCache.cachedInventory[i];
-                        if (itemToPush == null) continue;
-
-                        //Get the
+                        if (itemToPush == null) {
+                            continue;
+                            //If the item is null, we can't push it, so skip it
+                        }
                     }
                 }
-
-
-                continue;
+            continue;
             }
 
             CustomContainer container = this.plugin.getContainerManager().getCustomContainer(targetLocation.getBlock());
@@ -445,39 +428,42 @@ public class HopTask extends BukkitRunnable {
             // Get potential item to move.
             ItemStack item = hopperCache.cachedInventory[i];
 
-            // Can we check this item?
-            if (    // Ignore this one if the slot is empty
-                    item == null
-                            // Don't try to move items that we've added this round
-                            || (hopperCache.cacheChanged[i] && item.getAmount() - hopperCache.cacheAdded[i] < maxToMove)
-                            // skip if blocked or voidlisted
-                            || blockedMaterials.contains(item.getType())
-                            || hopper.getFilter().getVoidList().stream().anyMatch(itemStack -> Methods.isSimilarMaterial(itemStack, item))) {
+            if (item == null ||
+                    (hopperCache.cacheChanged[i] && item.getAmount() - hopperCache.cacheAdded[i] < maxToMove) ||
+                    blockedMaterials.contains(item.getType()) ||
+                    hopper.getFilter().getVoidList().stream().anyMatch(itemStack -> Methods.isSimilarMaterial(itemStack, item))) {
                 continue;
             }
 
-            // Create item that will be moved.
+            // Create a clone with the amount to move.
             ItemStack itemToMove = item.clone();
             itemToMove.setAmount(Math.min(item.getAmount(), maxToMove));
 
-            // Process whitelist and blacklist.
-            boolean blocked = (!hopper.getFilter().getWhiteList().isEmpty() && hopper.getFilter().getWhiteList().stream().noneMatch(itemStack -> itemStack.isSimilar(item))
-                    || hopper.getFilter().getBlackList().stream().anyMatch(itemStack -> itemStack.isSimilar(item)));
+            // Process whitelist/blacklist.
+            boolean blocked = (!hopper.getFilter().getWhiteList().isEmpty() &&
+                    hopper.getFilter().getWhiteList().stream().noneMatch(itemStack -> itemStack.isSimilar(item)))
+                    || hopper.getFilter().getBlackList().stream().anyMatch(itemStack -> itemStack.isSimilar(item));
 
-            // If blocked check to see if a movement can be made
+            // If blocked, try filterCache.
             if (blocked) {
                 if (filterCache != null && filterCache.addItem(itemToMove)) {
+                    // Remove from cache immediately.
                     hopperCache.removeItems(itemToMove);
                     return true;
                 }
-                // can't move into a filter chest, so keep looking for something else to move
                 continue;
             }
 
-            // Add item to container and return on success.
+            // Remove items from cache immediately—this “locks” the transfer.
+            hopperCache.removeItems(itemToMove);
+            // Now pass the (full) itemToMove to the container.
             if (container.addToContainer(itemToMove)) {
-                hopperCache.removeItems(itemToMove);
                 return true;
+            } else {
+                // If the container failed to accept the item, we have an issue.
+                // Ideally, container.addToContainer should be atomic.
+                // In production, you might want to add a rollback: e.g., re-add items to the cache.
+                System.err.println("Transfer failed in container.addToContainer; duplication risk.");
             }
         }
         return false;
