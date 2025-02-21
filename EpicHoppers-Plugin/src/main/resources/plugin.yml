@@ -24,7 +24,7 @@ softdepend:
   - Vault
   - WildStacker
   - WorldGuard
-
+load: POSTWORLD
 author: Craftaro
 website: ${project.parent.url}
 
