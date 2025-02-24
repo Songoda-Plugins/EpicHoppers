@@ -2,7 +2,6 @@ package com.craftaro.epichoppers.containers.impl;
 
 import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.epicfarming.EpicFarming;
-import com.craftaro.epicfarming.core.compatibility.CompatibleMaterial;
 import com.craftaro.epicfarming.farming.Farm;
 import com.craftaro.epichoppers.containers.CustomContainer;
 import com.craftaro.epichoppers.containers.IContainer;
