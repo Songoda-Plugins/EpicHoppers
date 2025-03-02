@@ -3,7 +3,6 @@ package com.craftaro.epichoppers.listeners;
 import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.hooks.ProtectionManager;
 import com.craftaro.core.hooks.WorldGuardHook;
-import com.craftaro.epichoppers.hopper.Hopper;
 import com.craftaro.epichoppers.settings.Settings;
 import com.craftaro.epichoppers.EpicHoppers;
 import com.craftaro.epichoppers.gui.GUIOverview;
@@ -63,9 +62,19 @@ public class InteractListeners implements Listener {
             return;
         }
 
-        if (Settings.USE_PROTECTION_PLUGINS.getBoolean() && ProtectionManager.canInteract(player, event.getClickedBlock().getLocation()) && WorldGuardHook.isInteractAllowed(event.getClickedBlock().getLocation())) {
-            AdventureUtils.sendMessage(this.plugin, this.plugin.getLocale().getMessage("event.general.protected").getPrefixedMessage());
-            return;
+        Boolean flagValue = WorldGuardHook.getBooleanFlag(event.getClickedBlock().getLocation().getChunk(), "use");
+        boolean WGCheck = (flagValue == null) || flagValue;
+
+        if (Settings.USE_PROTECTION_PLUGINS.getBoolean()) {
+            if (!WGCheck) {
+                AdventureUtils.sendMessage(this.plugin, this.plugin.getLocale().getMessage("event.general.worldguard").getPrefixedMessage(), player);
+                return;
+            }
+
+            if (!ProtectionManager.canInteract(player, event.getClickedBlock().getLocation())) {
+                AdventureUtils.sendMessage(this.plugin, this.plugin.getLocale().getMessage("event.general.protectedclaim").getPrefixedMessage(), player);
+                return;
+            }
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("FabledSkyBlock")) {
