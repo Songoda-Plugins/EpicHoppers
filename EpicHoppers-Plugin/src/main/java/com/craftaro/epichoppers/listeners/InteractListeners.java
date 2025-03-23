@@ -65,7 +65,7 @@ public class InteractListeners implements Listener {
         Boolean flagValue = WorldGuardHook.getBooleanFlag(event.getClickedBlock().getLocation().getChunk(), "use");
         boolean WGCheck = (flagValue == null) || flagValue;
 
-        if (Settings.USE_PROTECTION_PLUGINS.getBoolean()) {
+        if (Settings.USE_PROTECTION_PLUGINS.getBoolean() && event.getClickedBlock().getType() == Material.HOPPER) {
             if (!WGCheck) {
                 AdventureUtils.sendMessage(this.plugin, this.plugin.getLocale().getMessage("event.general.worldguard").getPrefixedMessage(), player);
                 return;
