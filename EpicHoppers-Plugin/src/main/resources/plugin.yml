@@ -3,7 +3,7 @@ description: ${project.parent.description}
 version: ${project.version}
 api-version: 1.13
 
-main: com.craftaro.epichoppers.EpicHoppers
+main: com.songoda.epichoppers.EpicHoppers
 softdepend:
   - AdvancedChests
   - ASkyBlock
@@ -25,7 +25,7 @@ softdepend:
   - WildStacker
   - WorldGuard
 load: POSTWORLD
-author: Craftaro
+author: Songoda
 website: ${project.parent.url}
 
 commands:

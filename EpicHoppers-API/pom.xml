@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.craftaro</groupId>
+        <groupId>com.songoda</groupId>
         <artifactId>EpicHoppers-Parent</artifactId>
         <version>5.7.1</version>
         <relativePath>../pom.xml</relativePath>
@@ -50,9 +50,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.craftaro</groupId>
-            <artifactId>CraftaroCore</artifactId>
-            <version>${craftaro.coreVersion}</version>
+            <groupId>com.songoda</groupId>
+            <artifactId>SongodaCore</artifactId>
+            <version>${songoda.coreVersion}</version>
             <scope>provided</scope>
         </dependency>
 
